@@ -2,6 +2,7 @@ package events;
 import org.hibernate.Session;
 
 import java.util.Date;
+import java.util.List;
 
 import util.HibernateUtil;
 
@@ -10,8 +11,16 @@ public class EventManager {
     public static void main(String[] args) {
         EventManager mgr = new EventManager();
 
-        if (args[0].equals("store")) {
+        if (args.length > 0 && args[0].equals("store")) {
             mgr.createAndStoreEvent("My Event", new Date());
+//        }else {
+        }else if (args[0].equals("list")) {
+            List events = mgr.listEvents();
+            for (int i = 0; i < events.size(); i++) {
+                Event theEvent = (Event) events.get(i);
+                System.out.println("Event: " + theEvent.getTitle() +
+                        " Time: " + theEvent.getDate());
+            }
         }
 
         HibernateUtil.getSessionFactory().close();
@@ -32,4 +41,16 @@ public class EventManager {
         session.getTransaction().commit();
     }
 
+    private List listEvents() {
+
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+
+        session.beginTransaction();
+
+        List result = session.createQuery("from Event").list();
+
+        session.getTransaction().commit();
+
+        return result;
+    }
 }

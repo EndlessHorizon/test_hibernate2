@@ -2,3 +2,4 @@ lib/*
 data/*
 .idea/*
 test_hibernate2.iml
+out

@@ -29,4 +29,11 @@
         </copy>
     </target>
 
+    <target name="run" depends="compile">
+        <java fork="true" classname="events.EventManager" classpathref="libraries">
+            <classpath path="${targetdir}"/>
+            <arg value="${action}"/>
+        </java>
+    </target>
+
 </project>
